@@ -52,6 +52,29 @@ h1 {
   color: rgba(255, 255, 255, 0.6);
 }
 
+.input-group > input {
+  width: 60px;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: inherit;
+  text-align: center;
+  -moz-appearance: textfield;
+}
+
+.input-group > input::-webkit-outer-spin-button,
+.input-group > input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.input-group > input:focus {
+  outline: none;
+  border-color: #646cff;
+}
+
 .time-input {
   display: flex;
   align-items: center;
@@ -208,7 +231,8 @@ button:disabled {
     stroke: rgba(0, 0, 0, 0.1);
   }
 
-  .time-input input {
+  .time-input input,
+  .input-group > input {
     border-color: rgba(0, 0, 0, 0.2);
     background-color: rgba(0, 0, 0, 0.05);
   }

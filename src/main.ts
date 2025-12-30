@@ -5,8 +5,7 @@ import { loadSettings, saveSettings } from './storage';
 
 const intervalMinInput = document.getElementById('interval-min') as HTMLInputElement;
 const intervalSecInput = document.getElementById('interval-sec') as HTMLInputElement;
-const sessionMinInput = document.getElementById('session-min') as HTMLInputElement;
-const sessionSecInput = document.getElementById('session-sec') as HTMLInputElement;
+const problemsInput = document.getElementById('problems') as HTMLInputElement;
 const intervalDisplay = document.getElementById('interval-display') as HTMLSpanElement;
 const sessionDisplay = document.getElementById('session-display') as HTMLSpanElement;
 const intervalProgress = document.querySelector('#interval-progress') as SVGCircleElement;
@@ -32,18 +31,19 @@ function getIntervalSeconds(): number {
   return min * 60 + sec;
 }
 
+function getProblems(): number {
+  return parseInt(problemsInput.value, 10) || 1;
+}
+
 function getSessionSeconds(): number {
-  const min = parseInt(sessionMinInput.value, 10) || 0;
-  const sec = parseInt(sessionSecInput.value, 10) || 0;
-  return min * 60 + sec;
+  return getIntervalSeconds() * getProblems();
 }
 
 function loadSavedSettings(): void {
   const settings = loadSettings();
   intervalMinInput.value = String(settings.intervalMin);
   intervalSecInput.value = String(settings.intervalSec);
-  sessionMinInput.value = String(settings.sessionMin);
-  sessionSecInput.value = String(settings.sessionSec);
+  problemsInput.value = String(settings.problems);
   updateDisplayFromInputs();
 }
 
@@ -57,7 +57,7 @@ function updateDisplayFromInputs(): void {
 function clampValue(input: HTMLInputElement): void {
   let value = parseInt(input.value, 10) || 0;
   const min = parseInt(input.min, 10) || 0;
-  const max = parseInt(input.max, 10) || 59;
+  const max = parseInt(input.max, 10) || 999;
   value = Math.max(min, Math.min(max, value));
   input.value = String(value);
 }
@@ -67,7 +67,7 @@ function handleArrowKeys(e: KeyboardEvent): void {
   if (e.key === 'ArrowUp') {
     e.preventDefault();
     let value = parseInt(input.value, 10) || 0;
-    const max = parseInt(input.max, 10) || 59;
+    const max = parseInt(input.max, 10) || 999;
     input.value = String(Math.min(max, value + 1));
     updateDisplayFromInputs();
   } else if (e.key === 'ArrowDown') {
@@ -83,7 +83,7 @@ function startTimer(): void {
   intervalDuration = getIntervalSeconds();
   sessionDuration = getSessionSeconds();
 
-  if (intervalDuration <= 0 || sessionDuration <= 0) {
+  if (intervalDuration <= 0 || getProblems() <= 0) {
     alert('Please set valid times greater than 0');
     return;
   }
@@ -91,8 +91,7 @@ function startTimer(): void {
   saveSettings({
     intervalMin: parseInt(intervalMinInput.value, 10) || 0,
     intervalSec: parseInt(intervalSecInput.value, 10) || 0,
-    sessionMin: parseInt(sessionMinInput.value, 10) || 0,
-    sessionSec: parseInt(sessionSecInput.value, 10) || 0,
+    problems: getProblems(),
   });
 
   ensureAudioContext();
@@ -138,7 +137,7 @@ function resetTimer(): void {
 startBtn.addEventListener('click', startTimer);
 resetBtn.addEventListener('click', resetTimer);
 
-const allInputs = [intervalMinInput, intervalSecInput, sessionMinInput, sessionSecInput];
+const allInputs = [intervalMinInput, intervalSecInput, problemsInput];
 allInputs.forEach(input => {
   input.addEventListener('input', () => {
     clampValue(input);

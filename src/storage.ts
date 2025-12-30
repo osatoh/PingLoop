@@ -3,15 +3,13 @@ const STORAGE_KEY = 'pingloop_settings';
 export type Settings = {
   intervalMin: number;
   intervalSec: number;
-  sessionMin: number;
-  sessionSec: number;
+  problems: number;
 };
 
 const DEFAULT_SETTINGS: Settings = {
   intervalMin: 0,
   intervalSec: 10,
-  sessionMin: 5,
-  sessionSec: 0,
+  problems: 30,
 };
 
 export function loadSettings(): Settings {
