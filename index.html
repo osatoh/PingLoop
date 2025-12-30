@@ -30,13 +30,25 @@
       </div>
 
       <div class="display">
-        <div class="time-box">
-          <span class="label">Interval</span>
-          <span class="time" id="interval-display">00:10</span>
+        <div class="timer-circle">
+          <svg class="progress-ring" viewBox="0 0 120 120">
+            <circle class="progress-ring__bg" cx="60" cy="60" r="54" />
+            <circle class="progress-ring__progress" id="interval-progress" cx="60" cy="60" r="54" />
+          </svg>
+          <div class="timer-circle__content">
+            <span class="label">Interval</span>
+            <span class="time" id="interval-display">00:10</span>
+          </div>
         </div>
-        <div class="time-box">
-          <span class="label">Session</span>
-          <span class="time" id="session-display">05:00</span>
+        <div class="timer-circle">
+          <svg class="progress-ring" viewBox="0 0 120 120">
+            <circle class="progress-ring__bg" cx="60" cy="60" r="54" />
+            <circle class="progress-ring__progress session" id="session-progress" cx="60" cy="60" r="54" />
+          </svg>
+          <div class="timer-circle__content">
+            <span class="label">Session</span>
+            <span class="time" id="session-display">05:00</span>
+          </div>
         </div>
       </div>
 

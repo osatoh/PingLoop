@@ -93,19 +93,56 @@ h1 {
   margin-bottom: 2rem;
 }
 
-.time-box {
+.timer-circle {
+  position: relative;
+  width: 140px;
+  height: 140px;
+}
+
+.progress-ring {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.progress-ring__bg {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.1);
+  stroke-width: 8;
+}
+
+.progress-ring__progress {
+  fill: none;
+  stroke: #646cff;
+  stroke-width: 8;
+  stroke-linecap: round;
+  stroke-dasharray: 339.292;
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 0.3s ease;
+}
+
+.progress-ring__progress.session {
+  stroke: #10b981;
+}
+
+.timer-circle__content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 0.25rem;
 }
 
-.time-box .label {
-  font-size: 0.875rem;
+.timer-circle__content .label {
+  font-size: 0.75rem;
   color: rgba(255, 255, 255, 0.6);
 }
 
-.time-box .time {
-  font-size: 3rem;
+.timer-circle__content .time {
+  font-size: 1.5rem;
   font-weight: bold;
   font-variant-numeric: tabular-nums;
 }
@@ -164,8 +201,12 @@ button:disabled {
   }
 
   .input-group label,
-  .time-box .label {
+  .timer-circle__content .label {
     color: rgba(0, 0, 0, 0.6);
+  }
+
+  .progress-ring__bg {
+    stroke: rgba(0, 0, 0, 0.1);
   }
 
   .time-input input {

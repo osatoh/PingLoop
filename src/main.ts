@@ -9,11 +9,22 @@ const sessionMinInput = document.getElementById('session-min') as HTMLInputEleme
 const sessionSecInput = document.getElementById('session-sec') as HTMLInputElement;
 const intervalDisplay = document.getElementById('interval-display') as HTMLSpanElement;
 const sessionDisplay = document.getElementById('session-display') as HTMLSpanElement;
+const intervalProgress = document.querySelector('#interval-progress') as SVGCircleElement;
+const sessionProgress = document.querySelector('#session-progress') as SVGCircleElement;
 const startBtn = document.getElementById('start-btn') as HTMLButtonElement;
 const resetBtn = document.getElementById('reset-btn') as HTMLButtonElement;
 const settingsDiv = document.getElementById('settings') as HTMLDivElement;
 
+const CIRCLE_CIRCUMFERENCE = 2 * Math.PI * 54; // r=54
+
 let timer: Timer | null = null;
+let intervalDuration = 0;
+let sessionDuration = 0;
+
+function setProgress(circle: SVGCircleElement, progress: number): void {
+  const offset = CIRCLE_CIRCUMFERENCE * (1 - progress);
+  circle.style.strokeDashoffset = String(offset);
+}
 
 function getIntervalSeconds(): number {
   const min = parseInt(intervalMinInput.value, 10) || 0;
@@ -39,6 +50,8 @@ function loadSavedSettings(): void {
 function updateDisplayFromInputs(): void {
   intervalDisplay.textContent = formatTime(getIntervalSeconds());
   sessionDisplay.textContent = formatTime(getSessionSeconds());
+  setProgress(intervalProgress, 1);
+  setProgress(sessionProgress, 1);
 }
 
 function clampValue(input: HTMLInputElement): void {
@@ -67,10 +80,10 @@ function handleArrowKeys(e: KeyboardEvent): void {
 }
 
 function startTimer(): void {
-  const intervalSeconds = getIntervalSeconds();
-  const sessionSeconds = getSessionSeconds();
+  intervalDuration = getIntervalSeconds();
+  sessionDuration = getSessionSeconds();
 
-  if (intervalSeconds <= 0 || sessionSeconds <= 0) {
+  if (intervalDuration <= 0 || sessionDuration <= 0) {
     alert('Please set valid times greater than 0');
     return;
   }
@@ -84,7 +97,7 @@ function startTimer(): void {
 
   ensureAudioContext();
 
-  timer = new Timer(intervalSeconds, sessionSeconds, {
+  timer = new Timer(intervalDuration, sessionDuration, {
     onStart: () => {
       playStartSound();
       startBtn.disabled = true;
@@ -103,6 +116,8 @@ function startTimer(): void {
     onTick: (intervalRemaining, sessionRemaining) => {
       intervalDisplay.textContent = formatTime(intervalRemaining);
       sessionDisplay.textContent = formatTime(sessionRemaining);
+      setProgress(intervalProgress, intervalRemaining / intervalDuration);
+      setProgress(sessionProgress, sessionRemaining / sessionDuration);
     },
   });
 
