@@ -181,13 +181,12 @@ button:disabled {
 }
 
 #reset-btn {
-  background-color: #1a1a1a;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: #ef4444;
+  border: 1px solid transparent;
 }
 
 #reset-btn:hover {
-  border-color: #646cff;
-  background-color: #1a1a1a;
+  background-color: #dc2626;
 }
 
 .settings.hidden {
@@ -215,7 +214,6 @@ button:disabled {
   }
 
   #reset-btn {
-    background-color: #f9f9f9;
-    border-color: rgba(0, 0, 0, 0.2);
+    background-color: #ef4444;
   }
 }
