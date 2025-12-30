@@ -45,13 +45,16 @@ export class Timer {
     this.sessionRemaining--;
 
     if (this.sessionRemaining <= 0) {
+      this.callbacks.onTick(0, 0);
       this.finish();
       return;
     }
 
     if (this.intervalRemaining <= 0) {
+      this.callbacks.onTick(0, this.sessionRemaining);
       this.callbacks.onInterval();
       this.intervalRemaining = this.intervalDuration;
+      return; // Don't update display again this tick, show 0 state
     }
 
     this.callbacks.onTick(this.intervalRemaining, this.sessionRemaining);
