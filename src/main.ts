@@ -79,7 +79,7 @@ function handleArrowKeys(e: KeyboardEvent): void {
   }
 }
 
-function startTimer(): void {
+async function startTimer(): Promise<void> {
   intervalDuration = getIntervalSeconds();
   sessionDuration = getSessionSeconds();
 
@@ -94,7 +94,7 @@ function startTimer(): void {
     problems: getProblems(),
   });
 
-  ensureAudioContext();
+  await ensureAudioContext();
 
   timer = new Timer(intervalDuration, sessionDuration, {
     onStart: () => {
