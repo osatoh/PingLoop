@@ -1,7 +1,7 @@
 let audioContext: AudioContext | null = null;
 
 function getAudioContext(): AudioContext {
-  if (!audioContext) {
+  if (!audioContext || audioContext.state === 'closed') {
     audioContext = new AudioContext();
   }
   return audioContext;
@@ -18,7 +18,7 @@ async function playTone(
   frequency: number,
   duration: number,
   type: OscillatorType = 'sine',
-  volume: number = 0.3
+  volume: number = 0.5
 ): Promise<void> {
   const ctx = getAudioContext();
 
@@ -44,18 +44,18 @@ async function playTone(
 
 // Start sound: ascending two-tone chime
 export function playStartSound(): void {
-  playTone(523.25, 0.15, 'sine', 0.3); // C5
-  setTimeout(() => playTone(659.25, 0.2, 'sine', 0.3), 150); // E5
+  playTone(523.25, 0.2, 'sine', 0.6); // C5
+  setTimeout(() => playTone(659.25, 0.25, 'sine', 0.6), 150); // E5
 }
 
 // Interval sound: short ping
 export function playIntervalSound(): void {
-  playTone(880, 0.1, 'sine', 0.25); // A5
+  playTone(880, 0.15, 'sine', 0.5); // A5
 }
 
 // Finish sound: descending three-tone chime
 export function playFinishSound(): void {
-  playTone(659.25, 0.15, 'sine', 0.3); // E5
-  setTimeout(() => playTone(523.25, 0.15, 'sine', 0.3), 150); // C5
-  setTimeout(() => playTone(392, 0.3, 'sine', 0.3), 300); // G4
+  playTone(659.25, 0.2, 'sine', 0.6); // E5
+  setTimeout(() => playTone(523.25, 0.2, 'sine', 0.6), 150); // C5
+  setTimeout(() => playTone(392, 0.35, 'sine', 0.6), 300); // G4
 }
