@@ -7,23 +7,23 @@ function getAudioContext(): AudioContext {
   return audioContext;
 }
 
-export function ensureAudioContext(): void {
+export async function ensureAudioContext(): Promise<void> {
   const ctx = getAudioContext();
   if (ctx.state === 'suspended') {
-    ctx.resume();
+    await ctx.resume();
   }
 }
 
-function playTone(
+async function playTone(
   frequency: number,
   duration: number,
   type: OscillatorType = 'sine',
   volume: number = 0.3
-): void {
+): Promise<void> {
   const ctx = getAudioContext();
 
   if (ctx.state === 'suspended') {
-    ctx.resume();
+    await ctx.resume();
   }
 
   const oscillator = ctx.createOscillator();
